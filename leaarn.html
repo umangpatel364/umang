@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Iron Business Billing</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background: #f4f4f4;
+        margin: 0;
+        padding: 20px;
+    }
+    h1 {
+        text-align: center;
+        color: #333;
+    }
+    .container {
+        max-width: 700px;
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        margin: auto;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    label {
+        font-weight: bold;
+        display: block;
+        margin-top: 10px;
+    }
+    select, input {
+        width: 100%;
+        padding: 10px;
+        margin-top: 5px;
+    }
+    input{
+        width: 97%;
+    }
+    button {
+        background: #007bff;
+        color: white;
+        border: none;
+        padding: 10px;
+        margin-top: 15px;
+        cursor: pointer;
+        font-size: 16px;
+        width: 100%;
+    }
+    button:hover {
+        background: #0056b3;
+    }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 15px;
+    }
+    th, td {
+        border: 1px solid #ccc;
+        padding: 8px;
+        text-align: center;
+    }
+    th {
+        background: #007bff;
+        color: white;
+    }
+    .total {
+        font-size: 18px;
+        font-weight: bold;
+        text-align: right;
+        margin-top: 15px;
+    }
+</style>
+</head>
+<body>
+
+<h1>Billing System</h1>
+<div class="container">
+    <label for="item">Select Item:</label>
+    <select id="item">
+        <option value="50">Iron Rods - ₹50/kg</option>
+        <option value="70">Steel Sheets - ₹70/kg</option>
+        <option value="60">Iron Pipes - ₹60/kg</option>
+    </select>
+
+    <label for="quantity">Enter Quantity (kg):</label>
+    <input type="number" id="quantity" placeholder="Enter quantity in kg">
+
+    <button onclick="addItem()">Add Item</button>
+
+    <table id="billTable">
+        <thead>
+            <tr>
+                <th>Item</th>
+                <th>Price per kg (₹)</th>
+                <th>Quantity (kg)</th>
+                <th>Total (₹)</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <div class="total" id="grandTotal">Grand Total: ₹0</div>
+</div>
+
+<script>
+    let grandTotal = 0;
+
+    function addItem() {
+        let itemDropdown = document.getElementById("item");
+        let pricePerKg = parseFloat(itemDropdown.value);
+        let itemName = itemDropdown.options[itemDropdown.selectedIndex].text.split(" - ")[0];
+        let quantity = parseFloat(document.getElementById("quantity").value);
+
+        if (isNaN(quantity) || quantity <= 0) {
+            alert("Please enter a valid quantity");
+            return;
+        }
+
+        let total = pricePerKg * quantity;
+        grandTotal += total;
+
+        let tableBody = document.getElementById("billTable").getElementsByTagName("tbody")[0];
+        let newRow = tableBody.insertRow();
+        newRow.insertCell(0).innerHTML = itemName;
+        newRow.insertCell(1).innerHTML = pricePerKg.toFixed(2);
+        newRow.insertCell(2).innerHTML = quantity;
+        newRow.insertCell(3).innerHTML = total.toFixed(2);
+
+        document.getElementById("grandTotal").innerHTML = "Grand Total: ₹" + grandTotal.toFixed(2);
+
+        document.getElementById("quantity").value = "";
+    }
+</script>
+
+</body>
+</html>
